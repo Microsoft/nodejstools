@@ -3,7 +3,7 @@ var EOL = require('os').EOL;
 var fs = require('fs');
 var path = require('path');
 // Choose 'tap' rather than 'min' or 'xunit'. The reason is that
-// 'min' produces undisplayable text to stdout and stderr under piped/redirect, 
+// 'min' produces undisplayable text to stdout and stderr under piped/redirect,
 // and 'xunit' does not print the stack trace from the test.
 var defaultMochaOptions = { ui: 'tdd', reporter: 'tap', timeout: 2000 };
 function append_stdout(string, encoding, fd) {
@@ -200,27 +200,45 @@ function logError() {
     console.error.apply(console, errorArgs);
 }
 
+// cache mocha module to avoid resolving it all the time
+var _mochaModule = null;
+
 function detectMocha(projectFolder) {
-    try {
-        var node_modulesFolder = projectFolder;
-        var mochaJsonPath = path.join(node_modulesFolder, 'test', 'mocha.json');
-        if (fs.existsSync(mochaJsonPath)) {
-            var opt = require(mochaJsonPath);
-            if (opt && opt.path) {
-                node_modulesFolder = path.resolve(projectFolder, opt.path);
+    if (!_mochaModule) {
+        // perform require look up on working directory and up the tree
+        var cd = projectFolder + "/." // adds /. to make loop easier on edge case;
+        var mochaModule = null;
+        do {
+            // get parent
+            cd = path.dirname(cd);
+            var mochaPath = path.join(cd, 'node_modules', 'mocha');
+            if (fs.existsSync(mochaPath)) {
+                try {
+                    mochaModule = require(mochaPath);
+                    break; // we found mocha
+                } catch (ex) {
+                    // ignore, not found
+                }
+            }
+        } while (cd != path.dirname(cd)); // stop when cd is root
+
+        if (!mochaModule) {
+            // if not found, try global
+            try {
+                mochaModule = require("mocha");
+            } catch (ex) {
+                // ignore, not found
             }
         }
 
-        var mochaPath = path.join(node_modulesFolder, 'node_modules', 'mocha');
-        var Mocha = new require(mochaPath);
-        return Mocha;
-    } catch (ex) {
-        logError(
-            'Failed to find Mocha package.  Mocha must be installed in the project locally.' + EOL +
-            'Install Mocha locally using the npm manager via solution explorer' + EOL +
-            'or with ".npm install mocha --save-dev" via the Node.js interactive window.');
-        return null;
+        if (mochaModule) {
+            _mochaModule = mochaModule;
+        } else {
+            logError("Failed to find Mocha package.  Mocha must be installed either in the project locally, in a parent node_modules folder or globably.  Mocha can be installed locally with the npm manager via solution explorer or with \".npm install mocha\" via the Node.js interactive window.");
+        }
     }
+
+    return _mochaModule;
 }
 
 function initializeMocha(Mocha, projectFolder) {
