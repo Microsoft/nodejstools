@@ -81,6 +81,9 @@
     <PackageReference Include="Microsoft.CSharp">
       <Version>4.5.0</Version>
     </PackageReference>
+    <PackageReference Include="Microsoft.TestPlatform.ObjectModel">
+      <Version>16.0.1</Version>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudioEng.MicroBuild.Core">
       <Version>0.4.1</Version>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
