@@ -20,6 +20,14 @@ namespace Microsoft.NodejsTools.TestAdapter
         private readonly Uri testExecutorUri;
         private readonly string nodeExePath;
 
+        public TestDiscovererWorker(string testSource, Uri testExecutorUri, string nodeExePath, string workDir)
+        {
+            this.testSource = testSource;
+            this.workingDir = workDir;
+            this.testExecutorUri = testExecutorUri;
+            this.nodeExePath = nodeExePath;
+        }
+
         public TestDiscovererWorker(string testSource, Uri testExecutorUri, string nodeExePath)
         {
             this.testSource = testSource;

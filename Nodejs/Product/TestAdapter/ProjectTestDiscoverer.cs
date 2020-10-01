@@ -141,7 +141,14 @@ namespace Microsoft.NodejsTools.TestAdapter
                                 nodeExePath = Nodejs.GetPathToNodeExecutableFromEnvironment();
                             }
 
-                            this.DiscoverTests(testItems, frameworkDiscoverer, discoverySink, logger, nodeExePath, proj.FullPath);
+                            var spaRoot = proj.GetProperty("SpaRoot")?.EvaluatedValue;
+                            var workDir = Path.GetDirectoryName(proj.FullPath);
+                            if (!String.IsNullOrEmpty(spaRoot))
+                            {
+                                workDir = Path.Combine(workDir, spaRoot);
+                            }
+                            this.DiscoverTests(testItems, frameworkDiscoverer, discoverySink, logger, nodeExePath,
+                                proj.FullPath, workDir);
                         }
                     }
                 }
@@ -159,7 +166,7 @@ namespace Microsoft.NodejsTools.TestAdapter
             }
         }
 
-        private void DiscoverTests(Dictionary<string, HashSet<string>> testItems, FrameworkDiscoverer frameworkDiscoverer, ITestCaseDiscoverySink discoverySink, IMessageLogger logger, string nodeExePath, string projectFullPath)
+        private void DiscoverTests(Dictionary<string, HashSet<string>> testItems, FrameworkDiscoverer frameworkDiscoverer, ITestCaseDiscoverySink discoverySink, IMessageLogger logger, string nodeExePath, string projectFullPath, string workDir)
         {
             foreach (var testFx in testItems.Keys)
             {
@@ -172,7 +179,7 @@ namespace Microsoft.NodejsTools.TestAdapter
 
                 var fileList = testItems[testFx];
 
-                var discoverWorker = new TestDiscovererWorker(projectFullPath, NodejsConstants.ExecutorUri, nodeExePath);
+                var discoverWorker = new TestDiscovererWorker(projectFullPath, NodejsConstants.ExecutorUri, nodeExePath, workDir);
                 discoverWorker.DiscoverTests(fileList, testFramework, logger, discoverySink);
             }
         }
