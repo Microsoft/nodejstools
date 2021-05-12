@@ -3,6 +3,7 @@
 var EOL = require('os').EOL;
 var fs = require('fs');
 var path = require('path');
+var inspector = require('inspector');
 // Choose 'tap' rather than 'min' or 'xunit'. The reason is that
 // 'min' produces undisplayable text to stdout and stderr under piped/redirect, 
 // and 'xunit' does not print the stack trace from the test.
@@ -213,7 +214,7 @@ function getMochaOptions(projectFolder) {
     }
 
     // set timeout to 10 minutes, because the default of 2 sec is too short for debugging scenarios
-    if (typeof v8debug === 'object') {
+    if (inspector.url()) {
         mochaOptions['timeout'] = 600000;
     }
 
