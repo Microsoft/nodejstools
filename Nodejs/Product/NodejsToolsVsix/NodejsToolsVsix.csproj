@@ -30,7 +30,7 @@
     <IncludePackageReferencesInVSIXContainer>false</IncludePackageReferencesInVSIXContainer>
     <!--For F5 debugging-->
     <StartAction>Program</StartAction>
-    <StartProgram>$(DevEnvDir)\devenv.exe</StartProgram>
+    <StartProgram>$(DevEnvDir)devenv.exe</StartProgram>
     <StartArguments>/rootsuffix Exp</StartArguments>
   </PropertyGroup>
   <ItemGroup>
