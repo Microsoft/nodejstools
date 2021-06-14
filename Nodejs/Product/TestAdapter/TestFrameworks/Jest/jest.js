@@ -36,35 +36,31 @@ const find_tests = function (testFileList, discoverResultFile, projectFolder) {
     });
 };
 
-const run_tests = function (context) {
-    return new Promise(async resolve => {
-        const jest = detectPackage(context.testCases[0].projectFolder, 'jest');
-        if (!jest) {
-            return resolve();
-        }
+const run_tests = async function (context) {
+    const jest = detectPackage(context.testCases[0].projectFolder, 'jest');
+    if (!jest) {
+        return;
+    }
 
-        // Start all test cases, as jest is unable to filter out independently
-        for (const testCase of context.testCases) {
-            context.post({
-                type: 'test start',
-                fullyQualifiedName: testCase.fullyQualifiedName
-            });
-        }
+    // Start all test cases, as jest is unable to filter out independently
+    for (const testCase of context.testCases) {
+        context.post({
+            type: 'test start',
+            fullyQualifiedName: testCase.fullyQualifiedName
+        });
+    }
 
-        const config = {
-            json: true,
-            reporters: [[__dirname + '/jestReporter.js', { context }]],
-            testMatch: [context.testCases[0].testFile]
-        };
+    const config = {
+        json: true,
+        reporters: [[__dirname + '/jestReporter.js', { context }]],
+        testMatch: [context.testCases[0].testFile]
+    };
 
-        try {
-            await jest.runCLI(config, [context.testCases[0].projectFolder]);
-        } catch (error) {
-            logError(error);
-        }
-
-        resolve();
-    });
+    try {
+        await jest.runCLI(config, [context.testCases[0].projectFolder]);
+    } catch (error) {
+        logError(error);
+    }
 };
 
 function visitNodes(nodes, suites, tests) {

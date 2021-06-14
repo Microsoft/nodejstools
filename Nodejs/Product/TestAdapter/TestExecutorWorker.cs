@@ -18,14 +18,14 @@ using Newtonsoft.Json;
 
 namespace Microsoft.NodejsTools.TestAdapter
 {
+    public class TestCaseResult
+    {
+        public TestCase TestCase;
+        public TestResult TestResult;
+    }
+
     internal sealed partial class TestExecutorWorker
     {
-        private sealed class TestCaseResult
-        {
-            public TestCase TestCase;
-            public TestResult TestResult;
-        }
-
         private static readonly Version Node8Version = new Version(8, 0);
 
         //get from NodeRemoteDebugPortSupplier::PortSupplierId
