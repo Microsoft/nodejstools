@@ -1,0 +1,5 @@
+// CacheTag must change whenever the Unified Settings manifest changes.
+[$RootKey$\SettingsManifests\{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}]
+@="Microsoft.NodejsTools.NodejsPackage"
+"ManifestPath"="$PackageFolder$\UnifiedSettings\NodejsGeneralOptions.registration.json"
+"CacheTag"=qword:01DD3FA6EA131C30

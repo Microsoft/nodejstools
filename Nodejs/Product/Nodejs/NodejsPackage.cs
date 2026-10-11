@@ -24,6 +24,36 @@ using MigrateToJsps;
 
 namespace Microsoft.NodejsTools
 {
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]
+    internal sealed class ProvideUnifiedSettingsOptionPageAttribute : RegistrationAttribute
+    {
+        private readonly string categoryName;
+        private readonly string pageName;
+
+        public ProvideUnifiedSettingsOptionPageAttribute(string categoryName, string pageName)
+        {
+            this.categoryName = categoryName;
+            this.pageName = pageName;
+        }
+
+        public override void Register(RegistrationContext context)
+        {
+            using (var pageKey = context.CreateKey(
+                string.Format(
+                    CultureInfo.InvariantCulture,
+                    @"ToolsOptionsPages\{0}\{1}",
+                    this.categoryName,
+                    this.pageName)))
+            {
+                pageKey.SetValue("IsInUnifiedSettings", 1);
+            }
+        }
+
+        public override void Unregister(RegistrationContext context)
+        {
+        }
+    }
+
     /// <summary>
     /// This is the class that implements the package exposed by this assembly.
     ///
@@ -39,6 +69,7 @@ namespace Microsoft.NodejsTools
     [PackageRegistration(UseManagedResourcesOnly = true)]
     [Guid(Guids.NodejsPackageString)]
     [ProvideOptionPage(typeof(NodejsGeneralOptionsPage), "Node.js Tools", "General", 114, 115, true)]
+    [ProvideUnifiedSettingsOptionPage("Node.js Tools", "General")]
     [WebSiteProject("JavaScript", "JavaScript")]
     [ProvideProjectFactory(typeof(NodejsProjectFactory), null, null, null, null, ".\\NullPath", LanguageVsTemplate = NodejsConstants.Nodejs, SortPriority = 0x17)]   // outer flavor, no file extension
     [ProvideMenuResource("Menus.ctmenu", 1)]                              // This attribute is needed to let the shell know that this package exposes some menus.

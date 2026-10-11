@@ -138,6 +138,15 @@
   <data name="115" xml:space="preserve">
     <value>General</value>
   </data>
+  <data name="UnifiedSettings_WaitOnAbnormalExit" xml:space="preserve">
+    <value>Wait for input when process exits abnormally</value>
+  </data>
+  <data name="UnifiedSettings_WaitOnNormalExit" xml:space="preserve">
+    <value>Wait for input when process exits normally</value>
+  </data>
+  <data name="UnifiedSettings_EditAndContinue" xml:space="preserve">
+    <value>Enable Edit and Continue</value>
+  </data>
   <data name="116" xml:space="preserve">
     <value>Npm</value>
   </data>

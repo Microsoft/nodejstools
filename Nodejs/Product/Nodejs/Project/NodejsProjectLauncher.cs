@@ -136,10 +136,13 @@ namespace Microsoft.NodejsTools.Project
                 psi.EnvironmentVariables[nameValue.Key] = nameValue.Value;
             }
 
+            var generalOptions = NodejsPackage.Instance.GeneralOptionsPage;
+            generalOptions.RefreshSettingsFromStorage();
+
             var process = NodeProcess.Start(
                 psi,
-                waitOnAbnormal: NodejsPackage.Instance.GeneralOptionsPage.WaitOnAbnormalExit,
-                waitOnNormal: NodejsPackage.Instance.GeneralOptionsPage.WaitOnNormalExit);
+                waitOnAbnormal: generalOptions.WaitOnAbnormalExit,
+                waitOnNormal: generalOptions.WaitOnNormalExit);
 
             this._project.OnDispose += process.ResponseToTerminateEvent;
 

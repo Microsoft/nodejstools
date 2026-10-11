@@ -1,0 +1,95 @@
+{
+  "$schema": "https://aka.ms/unified-settings-experience/registration/schema",
+  "properties": {
+    "debugging.nodejs.general.waitOnAbnormalExit": {
+      "type": "boolean",
+      "title": "@UnifiedSettings_WaitOnAbnormalExit;{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}",
+      "default": true,
+      "order": 0,
+      "migration": {
+        "custom": {
+          "mode": "full",
+          "inputs": [
+            {
+              "store": "VsUserSettingsRegistry",
+              "path": "NodejsTools\\Options\\General\\WaitOnAbnormalExit"
+            }
+          ],
+          "map": [
+            {
+              "result": true,
+              "matches": [ "True" ]
+            },
+            {
+              "result": false,
+              "matches": [ "False" ]
+            }
+          ]
+        }
+      }
+    },
+    "debugging.nodejs.general.waitOnNormalExit": {
+      "type": "boolean",
+      "title": "@UnifiedSettings_WaitOnNormalExit;{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}",
+      "default": false,
+      "order": 1,
+      "migration": {
+        "custom": {
+          "mode": "full",
+          "inputs": [
+            {
+              "store": "VsUserSettingsRegistry",
+              "path": "NodejsTools\\Options\\General\\WaitOnNormalExit"
+            }
+          ],
+          "map": [
+            {
+              "result": true,
+              "matches": [ "True" ]
+            },
+            {
+              "result": false,
+              "matches": [ "False" ]
+            }
+          ]
+        }
+      }
+    },
+    "debugging.nodejs.general.editAndContinue": {
+      "type": "boolean",
+      "title": "@UnifiedSettings_EditAndContinue;{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}",
+      "default": true,
+      "order": 2,
+      "migration": {
+        "custom": {
+          "mode": "full",
+          "inputs": [
+            {
+              "store": "VsUserSettingsRegistry",
+              "path": "NodejsTools\\Options\\General\\EditAndContinue"
+            }
+          ],
+          "map": [
+            {
+              "result": true,
+              "matches": [ "True" ]
+            },
+            {
+              "result": false,
+              "matches": [ "False" ]
+            }
+          ]
+        }
+      }
+    }
+  },
+  "categories": {
+    "debugging.nodejs": {
+      "title": "@114;{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}"
+    },
+    "debugging.nodejs.general": {
+      "title": "@115;{FE8A8C3D-328A-476D-99F9-2A24B75F8C7F}",
+      "legacyOptionPageId": "EF677A38-0953-39C2-A228-2FBE8F8F082E"
+    }
+  }
+}

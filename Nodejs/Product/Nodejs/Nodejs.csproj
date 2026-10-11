@@ -312,6 +312,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
+    <Content Include="UnifiedSettings.pkgdef">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="UnifiedSettings\NodejsGeneralOptions.registration.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <ZipItem Include="Templates\Files\JestUnitTest\UnitTest.js" />
     <ZipItem Include="Templates\Files\JestUnitTest\UnitTest.vstemplate" />
     <Content Include="Workspace\OpenFolderSchema.json">

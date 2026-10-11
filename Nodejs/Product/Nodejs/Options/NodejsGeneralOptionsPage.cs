@@ -14,6 +14,12 @@ namespace Microsoft.NodejsTools.Options
         private const string CheckForLongPathsSetting = "CheckForLongPaths";
 
         private NodejsGeneralOptionsControl _window;
+        private bool _waitOnAbnormalExit;
+        private bool _waitOnNormalExit;
+        private bool _editAndContinue;
+        private bool _waitOnAbnormalExitModified;
+        private bool _waitOnNormalExitModified;
+        private bool _editAndContinueModified;
 
         public NodejsGeneralOptionsPage()
             : base("General")
@@ -38,18 +44,42 @@ namespace Microsoft.NodejsTools.Options
         /// True if Node processes should pause for input before exiting
         /// if they exit abnormally.
         /// </summary>
-        public bool WaitOnAbnormalExit { get; set; }
+        public bool WaitOnAbnormalExit
+        {
+            get => this._waitOnAbnormalExit;
+            set
+            {
+                this._waitOnAbnormalExit = value;
+                this._waitOnAbnormalExitModified = true;
+            }
+        }
 
         /// <summary>
         /// True if Node processes should pause for input before exiting
         /// if they exit normally.
         /// </summary>
-        public bool WaitOnNormalExit { get; set; }
+        public bool WaitOnNormalExit
+        {
+            get => this._waitOnNormalExit;
+            set
+            {
+                this._waitOnNormalExit = value;
+                this._waitOnNormalExitModified = true;
+            }
+        }
 
         /// <summary>
         /// Indicates whether Edit and Continue feature should be enabled.
         /// </summary>
-        public bool EditAndContinue { get; set; }
+        public bool EditAndContinue
+        {
+            get => this._editAndContinue;
+            set
+            {
+                this._editAndContinue = value;
+                this._editAndContinueModified = true;
+            }
+        }
 
         /// <summary>
         /// Resets settings back to their defaults. This should be followed by
@@ -65,12 +95,36 @@ namespace Microsoft.NodejsTools.Options
 
         public override void LoadSettingsFromStorage()
         {
-            // Load settings from storage.
-            this.WaitOnAbnormalExit = LoadBool(WaitOnAbnormalExitSetting) ?? true;
-            this.WaitOnNormalExit = LoadBool(WaitOnNormalExitSetting) ?? false;
-            this.EditAndContinue = LoadBool(EditAndContinueSetting) ?? true;
+            this._waitOnAbnormalExit = LoadBool(WaitOnAbnormalExitSetting) ?? true;
+            this._waitOnNormalExit = LoadBool(WaitOnNormalExitSetting) ?? false;
+            this._editAndContinue = LoadBool(EditAndContinueSetting) ?? true;
+            this._waitOnAbnormalExitModified = false;
+            this._waitOnNormalExitModified = false;
+            this._editAndContinueModified = false;
 
-            // Synchronize UI with backing properties.
+            if (this._window != null)
+            {
+                this._window.SyncControlWithPageSettings(this);
+            }
+        }
+
+        internal void RefreshSettingsFromStorage()
+        {
+            if (!this._waitOnAbnormalExitModified)
+            {
+                this._waitOnAbnormalExit = LoadBool(WaitOnAbnormalExitSetting) ?? true;
+            }
+
+            if (!this._waitOnNormalExitModified)
+            {
+                this._waitOnNormalExit = LoadBool(WaitOnNormalExitSetting) ?? false;
+            }
+
+            if (!this._editAndContinueModified)
+            {
+                this._editAndContinue = LoadBool(EditAndContinueSetting) ?? true;
+            }
+
             if (this._window != null)
             {
                 this._window.SyncControlWithPageSettings(this);
@@ -79,16 +133,17 @@ namespace Microsoft.NodejsTools.Options
 
         public override void SaveSettingsToStorage()
         {
-            // Synchronize backing properties with UI.
             if (this._window != null)
             {
                 this._window.SyncPageWithControlSettings(this);
             }
 
-            // Save settings.
             SaveBool(WaitOnNormalExitSetting, this.WaitOnNormalExit);
             SaveBool(WaitOnAbnormalExitSetting, this.WaitOnAbnormalExit);
             SaveBool(EditAndContinueSetting, this.EditAndContinue);
+            this._waitOnAbnormalExitModified = false;
+            this._waitOnNormalExitModified = false;
+            this._editAndContinueModified = false;
         }
     }
 }
