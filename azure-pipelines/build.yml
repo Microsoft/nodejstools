@@ -42,7 +42,8 @@ extends:
     settings:
       networkIsolationPolicy: Permissive  
     pool:
-      name: VSEngSS-MicroBuild2022-1ES
+      name: VSEng-MicroBuildVSStable
+      image: server2025-microbuildVSStable
     sdl:
       binskim:
         scanOutputDirectoryOnly: true
