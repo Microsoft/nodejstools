@@ -24,7 +24,7 @@ extends:
   template: azure-pipelines/MicroBuild.1ES.Official.yml@MicroBuildTemplate
   parameters:
     sdl:
-      sourceAnalysisPool: VSEngSS-MicroBuild2022-1ES
+      sourceAnalysisPool: VSEng-MicroBuildVSStable
     settings:
       networkIsolationPolicy: Permissive,CFSClean
     stages:
@@ -32,7 +32,9 @@ extends:
       jobs:
       - job: insertion
         displayName: VS insertion
-        pool: VSEngSS-MicroBuild2022-1ES
+        pool:
+          name: VSEng-MicroBuildVSStable
+          image: server2025-microbuildVSStable
         templateContext:
           outputParentDirectory: $(Pipeline.Workspace)
           sdl:
